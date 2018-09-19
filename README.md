@@ -17,6 +17,7 @@ Scenarios not considered:
 2. PiF is in the graveyard
 3. Passing the turn has a higher EV than continuing to flip
 4. Storm count is insufficient
+5. Floating mana with Ad Naus on the stack is not black
 
 Example 1.
 
@@ -39,7 +40,7 @@ Example 2.
 
 python3 calcAN.py deck.txt -f 2 -r 1 -d 1 -l 20 -p "Underground Sea Dark Ritual Dark Ritual Dark Ritual" -c "Lions Eye Diamond"
 
--f 2  (nothing floating)
+-f 2  (2 black mana floating)
 -r 1  (1 land in play, relevant for Rain of Filth)
 -d 1  (already played my land for the turn)
 -l 20 (20 life remaining)

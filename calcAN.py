@@ -1,6 +1,7 @@
 import re
 import random
 import argparse
+import winModel
 
 cards = {}
 
@@ -36,59 +37,6 @@ class Hand(object):
         self.floating = floating
         self.lands = lands
         self.drop = drop
-
-    def wins(self):
-        floating = self.floating
-        currCards = self.cards.copy()
-        floating += currCards.count("Lotus Petal")
-        if self.drop==0:
-            for card in cards:
-                if cards[card] == 0 and card != "Lotus Petal" and card != "Lions Eye Diamond" and card in currCards:
-                    floating += 1
-                    break
-        if floating >= 1:
-            floating += 2*currCards.count("Dark Ritual")
-            floating += (self.lands-1)*currCards.count("Rain of Filth")
-        if floating >= 2:
-            floating += 3*currCards.count("Cabal Ritual")
-        if floating >= 4 and "Tendrils of Agony" in currCards:
-            return True
-        if floating >= 5 and "Infernal Tutor" in currCards and "Dark Petition" in currCards:
-            return True
-        if floating >= 2 and "Infernal Tutor" in currCards and "Lions Eye Diamond" in currCards:
-            floating += 3*currCards.count("Lions Eye Diamond")
-            if floating >= 6:
-                return True
-        if floating >= 5 and "Dark Petition" in currCards:
-            floating += 3*currCards.count("Lions Eye Diamond")
-            if floating >= 6:
-                return True
-        if floating + 3*currCards.count("Lions Eye Diamond") >= 7 and "Past in Flames" in currCards:
-            return True
-        if "Infernal Tutor" in currCards:
-            count = 0
-            dropped = self.drop
-            life = 0
-            for card in currCards:
-                if card == "Duress":
-                    floating -= 1
-                if card in ["Ponder","Preordain","Brainstorm","Past in Flames"]:
-                    count += 1
-                if card == "Thoughtseize":
-                    count -= 1
-                    floating -= 1
-                    life += 2
-                if card in ["Polluted Delta","Misty Rainforest","Bloodstained Mire","Underground Sea","Volcanic Island","Bayou","Tropical Island","Island","Swamp"]:
-                    if dropped == 0:
-                        dropped = 1
-                    else:
-                        return False
-            if count <= 0 and floating >= 6:
-                self.life += life
-                return True
-
-
-        return False
 
     def reset(self):
         self.cards = self.start.copy()
@@ -137,14 +85,16 @@ def evaluate(inPath,lands,trials,floating,handString,playedString,startingLife,d
         hand.reset()
         deck.shuffle()
         hand.add(deck.draw())
-        while not hand.wins():
+        winP = winModel.wins(cards,hand,deck.deck,startingLife)
+        while winP == 0:
             hand.add(deck.draw())
             if startingLife != 0 and hand.life >= startingLife:
                 break
+            winP = winModel.wins(cards,hand,deck.deck,startingLife)
         if startingLife == 0:
             lifetotal += hand.life
         elif hand.life < startingLife:
-            wins+=1
+            wins+=winP
 
     lifeAvg = float(lifetotal)/float(trials)
     winPercent = (float(wins)/float(trials))

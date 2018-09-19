@@ -15,9 +15,8 @@ returned
 Scenarios not considered:
 1. Tendrils is in the graveyard
 2. PiF is in the graveyard
-3. A cantrip line has a higher EV than continueing to flip
-4. Passing the turn has a higher EV than continuing to flip
-5. Storm count is insufficient
+3. Passing the turn has a higher EV than continuing to flip
+4. Storm count is insufficient
 
 Example 1.
 

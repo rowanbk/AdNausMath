@@ -65,6 +65,28 @@ class Hand(object):
                 return True
         if floating + 3*currCards.count("Lions Eye Diamond") >= 7 and "Past in Flames" in currCards:
             return True
+        if "Infernal Tutor" in currCards:
+            count = 0
+            dropped = self.drop
+            life = 0
+            for card in currCards:
+                if card == "Duress":
+                    floating -= 1
+                if card in ["Ponder","Preordain","Brainstorm","Past in Flames"]:
+                    count += 1
+                if card == "Thoughtseize":
+                    count -= 1
+                    floating -= 1
+                    life += 2
+                if card in ["Polluted Delta","Misty Rainforest","Bloodstained Mire","Underground Sea","Volcanic Island","Bayou","Tropical Island","Island","Swamp"]:
+                    if dropped == 0:
+                        dropped = 1
+                    else:
+                        return False
+            if count <= 0 and floating >= 6:
+                self.life += life
+                return True
+
 
         return False
 

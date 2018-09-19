@@ -18,4 +18,3 @@ Scenarios not considered:
 3. A cantrip line has a higher EV than continueing to flip
 4. Passing the turn has a higher EV than continuing to flip
 5. Storm count is insufficient
-6. Infernal is not required because hand is all rituals (IN PROGRESS)
